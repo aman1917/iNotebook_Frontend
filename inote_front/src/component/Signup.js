@@ -1,9 +1,111 @@
-import React from 'react'
+import React, { useState } from "react";
+import { useNavigate } from "react-router-dom";
 
 const Signup = () => {
-  return (
-    <div>Signup</div>
-  )
-}
+  const [credentials, setCredentials] = useState({
+    name: "",
+    email: "",
+    password: "",
+    cpassword: "",
+  });
+  const navigate = useNavigate();
 
-export default Signup
+  const host = "http://localhost:3001";
+  const handleSubmit = async (e) => {
+    e.preventDefault();
+    const response = await fetch(`${host}/api/auth/createuser`, {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+      },
+      body: JSON.stringify({
+        name: credentials.name,
+        email: credentials.email,
+        password: credentials.password,
+      }),
+    });
+    const json = await response.json();
+    console.log(json);
+    if (json.success) {
+      //save auth-token & redirect
+      localStorage.setItem("token", json.authtoken);
+      //   history.push("/");
+      navigate("/");
+    } else {
+      alert("Invalid Credentials");
+    }
+  };
+  const handleOnChange = (e) => {
+    setCredentials({ ...credentials, [e.target.name]: e.target.value });
+  };
+
+  return (
+    <div className="container">
+      <form onSubmit={handleSubmit}>
+        <div className="form-group">
+          <label htmlFor="name">Enter Your Name</label>
+          <input
+            type="text"
+            className="form-control"
+            id="name"
+            name="name"
+            aria-describedby="nameHelp"
+            placeholder="Enter Your Name"
+            onChange={handleOnChange}
+            value={credentials.name}
+            required
+          />
+        </div>
+        <div className="form-group">
+          <label htmlFor="email">Email address</label>
+          <input
+            type="email"
+            className="form-control"
+            id="email"
+            name="email"
+            aria-describedby="emailHelp"
+            placeholder="Enter email"
+            onChange={handleOnChange}
+            value={credentials.email}
+            required
+          />
+        </div>
+        <div className="form-group">
+          <label htmlFor="password">Password</label>
+          <input
+            type="password"
+            className="form-control"
+            id="password"
+            name="password"
+            placeholder="Password"
+            onChange={handleOnChange}
+            value={credentials.password}
+            autoComplete="on"
+            minLength={5}
+            required
+          />
+        </div>
+        <div className="form-group">
+          <label htmlFor="cpassword">Confirm Password</label>
+          <input
+            type="password"
+            className="form-control"
+            id="cpassword"
+            name="cpassword"
+            placeholder="Confirm Password"
+            onChange={handleOnChange}
+            value={credentials.cpassword}
+            autoComplete="on"
+            minLength={5}
+            required
+          />
+        </div>
+        <button type="submit" className="btn btn-primary my-2">
+          Submit
+        </button>
+      </form>
+    </div>
+  );
+};
+
+export default Signup;
