@@ -11,9 +11,10 @@ const Notes = (props) => {
   const navigate = useNavigate();
 
   const { notes, getNote, editNote } = context;
+  
   useEffect(() => {
     if (localStorage.getItem("token")) {
-      // getNote();
+      getNote();
       navigate("/");
       // eslint-disable-next-line
     }
