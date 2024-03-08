@@ -1,7 +1,7 @@
 import React, { useState } from "react";
 import { useNavigate } from "react-router-dom";
 
-const Signup = () => {
+const Signup = (props) => {
   const [credentials, setCredentials] = useState({
     name: "",
     email: "",
@@ -13,27 +13,34 @@ const Signup = () => {
   const host = "http://localhost:3001";
   const handleSubmit = async (e) => {
     e.preventDefault();
-    const response = await fetch(`${host}/api/auth/createuser`, {
-      method: "POST",
-      headers: {
-        "Content-Type": "application/json",
-      },
-      body: JSON.stringify({
-        name: credentials.name,
-        email: credentials.email,
-        password: credentials.password,
-      }),
-    });
-    const json = await response.json();
-    console.log(json);
-    if (json.success) {
-      //save auth-token & redirect
-      localStorage.setItem("token", json.authtoken);
-      //   history.push("/");
-      navigate("/");
+    if (credentials.password !== credentials.cpassword) {
+      props.showAlert("Password & Confirm Password is must be same", "danger");
     } else {
-      alert("Invalid Credentials");
+      const response = await fetch(`${host}/api/auth/createuser`, {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify({
+          name: credentials.name,
+          email: credentials.email,
+          password: credentials.password,
+        }),
+      });
+      const json = await response.json();
+      console.log(json);
+      if (json.success) {
+        //save auth-token & redirect
+        localStorage.setItem("token", json.authtoken);
+        //   history.push("/");
+        navigate("/");
+        props.showAlert("Account Created Sucessfully", "success");
+      } else {
+        // alert("Invalid Credentials");
+        props.showAlert("Sorry this email already exists", "danger");
+      }
     }
+   
   };
   const handleOnChange = (e) => {
     setCredentials({ ...credentials, [e.target.name]: e.target.value });

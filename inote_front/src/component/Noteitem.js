@@ -21,6 +21,7 @@ const Noteitem = (props) => {
               className="fa-solid fa-trash my-2"
               onClick={() => {
                 deleteNote(note._id);
+                props.showAlert("Deleted Successfully","success")
               }}
             ></i>
           </div>

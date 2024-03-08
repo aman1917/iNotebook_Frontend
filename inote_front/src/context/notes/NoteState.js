@@ -14,8 +14,7 @@ const NoteState = (props) => {
       method: "GET",
       headers: {
         "Content-Type": "application/json",
-        "auth-token":
-          "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VyIjp7ImlkIjoiNjViNjNlMzU2NzM2MGE2ZmJjMDhlYWM4In0sImlhdCI6MTcwNjQ0NTgwNX0.80HxbpwxFPXjj0iiFnYPKuw1g5APgvc6yii3oZBJ3Bw",
+        "auth-token": localStorage.getItem("token"),
       },
     });
     const json = await response.json();
@@ -30,8 +29,7 @@ const NoteState = (props) => {
       method: "POST",
       headers: {
         "Content-Type": "application/json",
-        "auth-token":
-          "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VyIjp7ImlkIjoiNjViNjNlMzU2NzM2MGE2ZmJjMDhlYWM4In0sImlhdCI6MTcwNjQ0NTgwNX0.80HxbpwxFPXjj0iiFnYPKuw1g5APgvc6yii3oZBJ3Bw",
+        "auth-token": localStorage.getItem("token"),
       },
       body: JSON.stringify({ title, description, tag }),
     });
@@ -48,18 +46,11 @@ const NoteState = (props) => {
       method: "DELETE",
       headers: {
         "Content-Type": "application/json",
-        "auth-token":
-          "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VyIjp7ImlkIjoiNjViNjNlMzU2NzM2MGE2ZmJjMDhlYWM4In0sImlhdCI6MTcwNjQ0NTgwNX0.80HxbpwxFPXjj0iiFnYPKuw1g5APgvc6yii3oZBJ3Bw",
+        "auth-token": localStorage.getItem("token"),
       },
     });
     const json = await response.json();
     console.log(json);
-
-    // console.log("Deleteing note with id" + id);
-    // const newNotes = notes.filter((note) => {
-    //   return note._id !== id;
-    // });
-    // setNotes(newNotes);
   };
 
   //Edit Note
@@ -69,8 +60,7 @@ const NoteState = (props) => {
       method: "PUT",
       headers: {
         "Content-Type": "application/json",
-        "auth-token":
-          "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VyIjp7ImlkIjoiNjViNjNlMzU2NzM2MGE2ZmJjMDhlYWM4In0sImlhdCI6MTcwNjQ0NTgwNX0.80HxbpwxFPXjj0iiFnYPKuw1g5APgvc6yii3oZBJ3Bw",
+        "auth-token": localStorage.getItem("token"),
       },
       body: JSON.stringify({ title, description, tag }),
     });

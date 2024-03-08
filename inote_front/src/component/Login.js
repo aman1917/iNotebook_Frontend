@@ -1,11 +1,9 @@
 import React, { useState } from "react";
 import { useNavigate } from "react-router-dom";
 
-const Login = () => {
+const Login = (props) => {
   const [credentials, setCredentials] = useState({ email: "", password: "" });
   const host = "http://localhost:3001";
-  //   let history = unstable_HistoryRouter();
-  //   let histoty = useHistory();
   const navigate = useNavigate();
 
   const handleSubmit = async (e) => {
@@ -23,19 +21,17 @@ const Login = () => {
     const json = await response.json();
     console.log(json);
     if (json.success) {
-      //save auth-token & redirect
       localStorage.setItem("token", json.authtoken);
-      //   history.push("/");
       navigate("/");
+      props.showAlert("Login Sucessfully","success")
     } else {
-      alert("Invalid Credentials");
+      props.showAlert("Invalid Credentials","danger")
+
     }
   };
   const handleOnChange = (e) => {
     setCredentials({ ...credentials, [e.target.name]: e.target.value });
   };
-  // console.log(credentials.email);
-  // console.log(credentials.password);
 
   return (
     <div className="container">
